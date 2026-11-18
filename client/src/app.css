@@ -1,0 +1,211 @@
+:root {
+  --bg: #0f1115;
+  --surface: #171a21;
+  --surface-2: #1f232c;
+  --border: #2a2f3a;
+  --text: #a0c2ff;
+  --text-muted: #8b93a1;
+  --accent: #4f8cff;
+  --accent-hover: #6a9dff;
+  --danger: #e5484d;
+  --radius: 10px;
+
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+
+/* ---------- BASE ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+}
+h1,
+h2,
+p {
+  margin: 0 0 10px;
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- BUTTONS AND INPUTS ---------- */
+
+button {
+  font: inherit;
+  padding: 8px 14px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+button:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+button:disabled {
+  background: var(--surface-2);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+input {
+  font: inherit;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+}
+input::placeholder {
+  color: var(--text-muted);
+}
+input:disabled {
+  opacity: 0.5;
+}
+
+/* ---------- PAGE LAYOUT ---------- */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.empty-state {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+}
+
+/* Top bar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.room {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Status banners */
+.banner {
+  padding: 8px 20px;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.notice {
+  color: var(--danger);
+}
+
+/* ---------- VIDEOS ---------- */
+
+.videos {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  align-content: start;
+  padding: 16px;
+  overflow-y: auto;
+}
+.tile {
+  position: relative;
+}
+.tile video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #000;
+  border-radius: var(--radius);
+}
+.tile .name {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  margin: 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 0.6);
+  color: var(--text);
+  font-size: 0.85rem;
+}
+.tile.local video {
+  transform: scaleX(-1);
+}
+
+/* ---------- CHAT ---------- */
+
+.chat-panel {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+}
+.chat {
+  flex: 1;
+  margin: 0;
+  padding: 12px;
+  list-style: none;
+  overflow-y: auto;
+}
+.chat li + li {
+  margin-top: 8px;
+}
+.empty {
+  color: var(--text-muted);
+}
+.chat-form {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+.cHat-form input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---------- DIALOG ---------- */
+dialog {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+dialog::backdrop {
+  background: rgb(0 0 0 / 0.6);
+}
