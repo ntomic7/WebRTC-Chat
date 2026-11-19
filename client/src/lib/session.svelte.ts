@@ -15,7 +15,9 @@ export const session = $state({
     currentRoom: "",
     joined: false,
     serverUp: true,
-    status: "",
+    connectedToServer: false,
+    status: "Connecting to the server... (a free server can take up to a minute " +
+                "to wake up)",
     notice: "",
     remoteStreams: [] as {id: string, stream: MediaStream}[],
 });
@@ -57,6 +59,7 @@ async function onServerMessage(message: ServerMessage)
 }
 function onServerClose(){
     session.serverUp = false;
+    session.connectedToServer = false;
     session.notice = session.joined ? "Lost connection to the server. Your call " +
         "continues but nobody can join." : "Could not reach the server. Reload " +
         "the page to try again.";
@@ -74,7 +77,9 @@ function onRemoteStream(peerId: string, stream: MediaStream | null)
     session.status = refreshStatus(session.remoteStreams.length);
 }
 export function connect(){
-    socket = createSocket(WS_URL, onServerMessage, onServerClose);
+    socket = createSocket(WS_URL, onServerMessage, onServerClose,
+        () => {session.connectedToServer = true;
+                      session.status = "Not in a call"});
     call = createCall(socket, onRemoteStream,
         (peerId, text) => {
             addMessage(peerId, session.usernames[peerId] ?? "Guest", text);
@@ -96,7 +101,7 @@ export function sendToPeers(text: string){
 export async function joinCall(createRoom: boolean): Promise<boolean>
 {
     const room = session.roomName.trim();
-    if(!room || !socket || !call) return false;
+    if(!room || !socket || !call || !session.connectedToServer) return false;
 
     let stream: MediaStream | undefined;
     try{

@@ -18,7 +18,7 @@ let {onJoinClick}: Props = $props();
         <button onclick={leaveCall}>Leave call</button>
     {:else}
         <input bind:value={session.username} placeholder="Enter name" />
-        <button onclick={startCall} disabled={!session.serverUp}>Start new call</button>
-        <button onclick={onJoinClick} disabled={!session.serverUp}>Join call</button>
+        <button onclick={startCall} disabled={!session.connectedToServer}>Start new call</button>
+        <button onclick={onJoinClick} disabled={!session.connectedToServer}>Join call</button>
     {/if}
 </div>

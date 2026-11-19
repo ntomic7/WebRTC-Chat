@@ -6,7 +6,7 @@ export type Socket = {
 };
 
 export function createSocket(url: string, onMessage: (message: ServerMessage) =>
-    Promise<void> | void, onClose: () => void): Socket
+    Promise<void> | void, onClose: () => void, onOpen: () => void): Socket
 {
     const ws = new WebSocket(url);
     let closedByUs = false;
@@ -16,6 +16,7 @@ export function createSocket(url: string, onMessage: (message: ServerMessage) =>
         const message: ServerMessage = JSON.parse(event.data);
         queue = queue.then(() => onMessage(message)).catch(console.error);
     };
+    ws.onopen = () => onOpen();
     ws.onclose = () => {
         if(!closedByUs) onClose();
     }
